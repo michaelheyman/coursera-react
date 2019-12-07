@@ -30,11 +30,41 @@ class DishDetail extends Component {
       );
   }
 
+  renderComments(comments) {
+    if (!comments || comments.length === 0) {
+      return (
+        <div></div>
+      );
+    }
+
+    const renderComment = comments.map((comment) => {
+      return (
+        <div>
+          <p>{comment.comment}</p>
+          <p>-- {comment.author}, {comment.date}</p>
+        </div>
+      );
+    });
+
+    return (
+      <Card>
+        <CardBody>
+          <h4>Comments</h4>
+          {renderComment}
+        </CardBody>
+      </Card>
+    );
+  }
+
   render() {
+    const { dish } = this.props;
     return (
       <div className="row">
         <div className="col-12 col-md-5 m-1">
-          {this.renderDish(this.props.dish)}
+          {this.renderDish(dish)}
+        </div>
+        <div className="col-12 col-md-5 m-1">
+          {dish ? this.renderComments(dish.comments) : null}
         </div>
       </div>
     );
