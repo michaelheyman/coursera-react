@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
 import {
-  Card, CardImg, CardText, CardBody,
-  CardTitle, Breadcrumb, BreadcrumbItem, Button, NavItem, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardTitle,
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
+  NavItem,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Row, Col
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Control, Errors, LocalForm } from 'react-redux-form';
 
 function RenderDish({dish}) {
   if (dish != null)
@@ -81,12 +97,44 @@ class CommentForm extends Component {
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
           <ModalBody>
+            <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+              <Row className="form-group">
+                <Label htmlFor="rating" md={12}>Rating</Label>
+                <Col md={12}>
+                  <Control.select model=".rating" name="rating"
+                                  className="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </Control.select>
+                </Col>
+              </Row>
+              <Row className="form-group">
+                <Label htmlFor="author" md={12}>Your Name</Label>
+                <Col md={12}>
+                  <Control.text model=".author" id="author" name="author"
+                                placeholder="Your Name"
+                                className="form-control"
+                  />
+                </Col>
+              </Row>
+              <Row className="form-group">
+                <Label htmlFor="comment" md={12}>Comment</Label>
+                <Col md={12}>
+                  <Control.textarea model=".comment" id="comment" name="comment"
+                                    rows="6"
+                                    className="form-control" />
+                </Col>
+              </Row>
+            </LocalForm>
           </ModalBody>
         </Modal>
       </div>
     );
   }
-};
+}
 
 const DishDetail = (props) => {
   const { dish } = props;
