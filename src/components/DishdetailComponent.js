@@ -1,6 +1,8 @@
-import React from 'react';
-import { Card, CardImg, CardText, CardBody,
-  CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import React, { Component } from 'react';
+import {
+  Card, CardImg, CardText, CardBody,
+  CardTitle, Breadcrumb, BreadcrumbItem, Button, NavItem, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input
+} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 function RenderDish({dish}) {
@@ -47,12 +49,46 @@ function RenderComments({comments}) {
       <CardBody>
         <h4>Comments</h4>
         {renderComment}
+        <CommentForm />
       </CardBody>
     </Card>
   );
 }
 
-const  DishDetail = (props) => {
+class CommentForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isModalOpen: false
+    };
+
+    this.toggleModal = this.toggleModal.bind(this);
+  }
+
+  toggleModal() {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen
+    });
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+          <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Submit Comment</Button>
+        </div>
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+          <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+          <ModalBody>
+          </ModalBody>
+        </Modal>
+      </div>
+    );
+  }
+};
+
+const DishDetail = (props) => {
   const { dish } = props;
 
   return (
