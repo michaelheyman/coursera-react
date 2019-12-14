@@ -8,18 +8,17 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
-  NavItem,
   Modal,
   ModalHeader,
   ModalBody,
-  Form,
-  FormGroup,
   Label,
-  Input,
   Row, Col
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, Errors, LocalForm } from 'react-redux-form';
+
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
 
 function RenderDish({dish}) {
   if (dish != null)
@@ -117,6 +116,18 @@ class CommentForm extends Component {
                   <Control.text model=".author" id="author" name="author"
                                 placeholder="Your Name"
                                 className="form-control"
+                                validators={{
+                                  minLength: minLength(3), maxLength: maxLength(15)
+                                }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".author"
+                    show="touched"
+                    messages={{
+                      minLength: 'Must be greater than 2 characters',
+                      maxLength: 'Must be 15 characters or less'
+                    }}
                   />
                 </Col>
               </Row>
