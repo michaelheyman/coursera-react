@@ -20,7 +20,7 @@ import { Control, Errors, LocalForm } from 'react-redux-form';
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
-function RenderDish({dish}) {
+function RenderDish({ dish }) {
   if (dish != null)
     return (
       <Card>
@@ -33,14 +33,14 @@ function RenderDish({dish}) {
     );
   else
     return (
-      <div/>
+      <div />
     );
 }
 
-function RenderComments({comments}) {
+function RenderComments({ comments, addComment, dishId }) {
   if (!comments || comments.length === 0) {
     return (
-      <div/>
+      <div />
     );
   }
 
@@ -48,7 +48,8 @@ function RenderComments({comments}) {
     const date = new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
-      day: '2-digit'})
+      day: '2-digit'
+    })
       .format(new Date(Date.parse(comment.date)));
 
     return (
@@ -64,7 +65,7 @@ function RenderComments({comments}) {
       <CardBody>
         <h4>Comments</h4>
         {renderComment}
-        <CommentForm />
+        <CommentForm dishId83gg={dishId} addComment={addComment} />
       </CardBody>
     </Card>
   );
@@ -79,12 +80,18 @@ class CommentForm extends Component {
     };
 
     this.toggleModal = this.toggleModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   toggleModal() {
     this.setState({
       isModalOpen: !this.state.isModalOpen
     });
+  }
+
+  handleSubmit(values) {
+    this.toggleModal();
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
   }
 
   render() {
@@ -101,7 +108,7 @@ class CommentForm extends Component {
                 <Label htmlFor="rating" md={12}>Rating</Label>
                 <Col md={12}>
                   <Control.select model=".rating" name="rating"
-                                  className="form-control">
+                    className="form-control">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -114,11 +121,11 @@ class CommentForm extends Component {
                 <Label htmlFor="author" md={12}>Your Name</Label>
                 <Col md={12}>
                   <Control.text model=".author" id="author" name="author"
-                                placeholder="Your Name"
-                                className="form-control"
-                                validators={{
-                                  minLength: minLength(3), maxLength: maxLength(15)
-                                }}
+                    placeholder="Your Name"
+                    className="form-control"
+                    validators={{
+                      minLength: minLength(3), maxLength: maxLength(15)
+                    }}
                   />
                   <Errors
                     className="text-danger"
@@ -135,8 +142,8 @@ class CommentForm extends Component {
                 <Label htmlFor="comment" md={12}>Comment</Label>
                 <Col md={12}>
                   <Control.textarea model=".comment" id="comment" name="comment"
-                                    rows="6"
-                                    className="form-control" />
+                    rows="6"
+                    className="form-control" />
                 </Col>
               </Row>
             </LocalForm>
@@ -168,7 +175,10 @@ const DishDetail = (props) => {
           <RenderDish dish={props.dish} />
         </div>
         <div className="col-12 col-md-5 m-1">
-          <RenderComments comments={props.comments} />
+          <RenderComments comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id}
+          />
         </div>
       </div>
     </div>
