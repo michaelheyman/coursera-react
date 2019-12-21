@@ -66,7 +66,7 @@ function RenderComments({ comments, addComment, dishId }) {
       <CardBody>
         <h4>Comments</h4>
         {renderComment}
-        <CommentForm dishId83gg={dishId} addComment={addComment} />
+        <CommentForm dishId={dishId} addComment={addComment} />
       </CardBody>
     </Card>
   );
